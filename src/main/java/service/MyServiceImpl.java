@@ -30,6 +30,10 @@ public class MyServiceImpl implements MyService {
 
     public List<Foo> findByName(final String name) throws Exception {
 
+        if (name == null) {
+            throw new MyException("hatalı");
+        }
+
         if (name == null || name.equals("")) {
             throw new Exception();
         }
