@@ -12,11 +12,14 @@ import repository.MyRepositoryDAO;
 import service.MyServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertSame;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MyServiceImplTest {
@@ -97,6 +100,28 @@ public class MyServiceImplTest {
 
     @Test
     public void updateFoo() throws Exception {
+        Foo foo=new Foo();
+        foo.setId(1);
+        foo.setName("okan");
+        foo.setList(Arrays.asList("kgz"));
+
+        when(myRepositoryDAO.updateFoo(any(Foo.class))).thenReturn(foo);
+
+
+        Foo restult=myService.updateFoo(foo);
+
+        verify(myRepositoryDAO,times(1)).updateFoo(foo);
+
+        assertEquals(foo.getId(),restult.getId());
+        assertEquals(foo.getList(),restult.getList());
+        assertSame(foo,restult);
+
+    }
+    @Test(expected = Exception.class)
+    public void updateFoo_exception() throws Exception {
+        Foo foo=null;
+        myService.updateFoo(foo);
+
 
     }
 }
